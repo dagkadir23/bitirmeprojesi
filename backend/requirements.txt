@@ -1,0 +1,27 @@
+# SecureVision AI - Python Bağımlılıkları
+# Kurulum: pip install -r backend/requirements.txt
+
+# Web Framework
+flask>=3.0.0
+
+# Yapay Zeka
+torch>=2.0.0
+ultralytics>=8.0.0
+
+# Görüntü İşleme
+opencv-python>=4.8.0
+
+# Veritabanı (SQLite built-in, ek paket gerekmez)
+
+# Sistem İzleme
+psutil>=5.9.0
+
+# PDF Oluşturma
+fpdf>=1.7.2
+
+# Harici API İstekleri
+requests>=2.31.0
+
+# Grafik Üretimi (evaluate/generate_figures için)
+matplotlib>=3.7.0
+numpy>=1.24.0

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurumsal Vaka Yönetimi ve Analitik Platformu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .video-container { border: 2px solid rgba(56, 189, 248, 0.4); box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); transition: all 0.3s ease; }
+        .anim-pulse-red { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    </style>
+</head>
+<body class="min-h-screen p-6">
+    <header class="flex justify-between items-center mb-6 glass-panel p-4 rounded-2xl">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 bg-blue-600 bg-opacity-20 rounded-lg text-blue-400"><i class="fa-solid fa-server text-2xl"></i></div>
+            <div>
+                <h1 class="text-xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">KURUMSAL OLAY ANALİTİĞİ TESPİT SİSTEMİ</h1>
+                <p class="text-xs text-slate-400 font-medium">Katmanlı Güvenlik Mimarisi v1.0 | <span class="text-emerald-400">Rol: {{ role | upper }}</span></p>
+            </div>
+        </div>
+        <div class="flex space-x-3">
+            <!-- CPU/Processing Metrics -->
+            <div class="text-center px-4 py-2 border border-slate-700 rounded-xl bg-slate-800">
+                <p class="text-[10px] text-slate-400">İşlem Gecikmesi</p>
+                <p class="text-sm font-bold text-cyan-400 font-mono" id="processing-time">-- ms</p>
+            </div>
+            <a href="/" class="bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl flex items-center transition text-xs font-bold text-slate-300" title="Proje Tanıtım Sayfası">
+                <i class="fa-solid fa-book text-blue-400 mr-2"></i> Proje
+            </a>
+            <a href="/logout" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl flex items-center transition text-xs font-bold text-slate-300">
+                <i class="fa-solid fa-power-off text-red-400 mr-2"></i> Çıkış
+            </a>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        <main class="lg:col-span-3 glass-panel rounded-2xl p-4 flex flex-col">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-sm font-semibold tracking-wide text-slate-300"><i class="fa-solid fa-satellite-dish mr-2"></i>CANLI GÖRÜNTÜ AKIŞI</h2>
+                <div class="flex space-x-4 text-xs font-mono">
+                    <span class="text-slate-400">Doğruluk: <span id="accuracy-display" class="font-bold text-emerald-400">%--</span></span>
+                    <span class="text-slate-400">F1-Score: <span id="f1-display" class="font-bold text-emerald-400">--</span></span>
+                </div>
+            </div>
+            <p class="text-[10px] text-slate-500 mb-3 leading-relaxed border-l-2 border-blue-500/30 pl-2">
+                <i class="fa-solid fa-info-circle text-blue-400/60 mr-1"></i>
+                YOLOv8 nesne tespit modeli ile kamera görüntüsü üzerinde gerçek zamanlı insan tespiti ve Autoencoder tabanlı anomali skorlaması yapılmaktadır. Risk durumuna göre bounding box rengi otomatik değişir.
+            </p>
+            
+            <div class="relative w-full rounded-xl overflow-hidden video-container bg-black flex-grow min-h-[400px]" id="video-wrapper">
+                <img src="/video_feed" alt="Bağlantı Bekleniyor..." class="w-full h-auto object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/0f172a/38bdf8?text=Medya+Sunucusu+Cevap+Vermiyor'">
+            </div>
+        </main>
+
+        <aside class="flex flex-col space-y-6">
+            <!-- Adversarial Test Merkezi (YALNIZCA ADMIN) -->
+            <div class="glass-panel p-5 rounded-2xl border-t-4 border-indigo-500 relative">
+                {% if role != 'admin' %}
+                <div class="absolute inset-0 bg-slate-900 bg-opacity-80 backdrop-blur-sm flex flex-col justify-center items-center rounded-2xl z-20">
+                    <i class="fa-solid fa-lock text-slate-500 text-3xl mb-2"></i>
+                    <p class="text-xs text-slate-400">Yönetici Yetkisi Gereklidir</p>
+                </div>
+                {% endif %}
+                <h2 class="text-xs font-bold tracking-wide text-indigo-300 mb-2"><i class="fa-solid fa-shield-virus mr-2"></i>DAYANIKLILIK TEST MODÜLÜ</h2>
+                <p class="text-[9px] text-slate-500 mb-3 leading-relaxed">
+                    <i class="fa-solid fa-info-circle text-indigo-400/60 mr-1"></i>
+                    Yapay zekanın adversarial saldırılara karşı dayanıklılığını test eder. Adversarial perturbation CNN filtrelerini bozarak modeli körleştirir; savunma filtresi ise Median Blur + Keskinleştirme dizisiyle gürültüyü temizler.
+                </p>
+                <div class="flex flex-col gap-3 mb-4">
+                    <button onclick="toggleAction('attack')" id="btn-attack" class="bg-red-900/50 hover:bg-red-700/50 border border-red-500/50 text-red-200 py-2 rounded text-xs font-bold transition">
+                        <i class="fa-solid fa-bug mr-1"></i> Adversarial Perturbation
+                    </button>
+                    <button onclick="toggleAction('defense')" id="btn-defense" class="bg-emerald-600 hover:bg-emerald-500 border border-emerald-400 text-white py-2 rounded text-xs font-bold transition">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> Savunma Filtresi Uyarla
+                    </button>
+                </div>
+                
+                <div class="bg-slate-800 p-3 rounded shadow-inner mt-4 border border-slate-700">
+                    <p class="text-[10px] text-slate-400 mb-1 border-b border-slate-700 pb-1">Veri Bütünlüğü Doğrulaması (Log Katmanı)</p>
+                    <p class="text-[8px] text-slate-600 mb-2 leading-relaxed">Log kayıtlarının manipüle edilip edilmediğini SHA-256 hash karşılaştırması ile kontrol eder. "Manipüle Et" butonu veri zehirleme saldırısını simüle eder.</p>
+                    <span id="integrity-status" class="block text-center text-[10px] font-bold text-slate-200 bg-slate-700 px-2 py-2 rounded mb-2">Kontrol Ediliyor...</span>
+                    <div class="flex space-x-2">
+                        <button onclick="verifyLogs()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-[10px] py-1 rounded"><i class="fa-solid fa-fingerprint"></i> Check</button>
+                        <button onclick="poisonLog()" class="flex-1 bg-purple-900 text-purple-200 text-[10px] py-1 rounded"><i class="fa-solid fa-vial"></i> Manipüle Et</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağlık Metrikleri -->
+            <div class="glass-panel p-4 rounded-2xl flex-grow">
+                <h2 class="text-xs font-semibold tracking-wide text-slate-300 mb-1"><i class="fa-solid fa-chart-line mr-2"></i>SİSTEM METRİKLERİ</h2>
+                <p class="text-[9px] text-slate-500 mb-3 leading-relaxed">
+                    <i class="fa-solid fa-info-circle text-slate-600 mr-1"></i>
+                    Anlık performans göstergeleri: Yanlış alarm oranı (False Positive Rate), CPU kullanımı ve toplam tespit edilen vaka sayısı.
+                </p>
+                <div class="space-y-3">
+                    <div class="bg-slate-800 rounded p-2 flex justify-between items-center"><span class="text-xs text-slate-400">İzole Yanlış Alarm Oranı</span> <span id="far-display" class="font-mono text-xs text-amber-400">%--</span></div>
+                    <div class="bg-slate-800 rounded p-2 flex justify-between items-center"><span class="text-xs text-slate-400">Sunucu CPU Yükü</span> <span id="cpu-display" class="font-mono text-xs text-slate-200">%--</span></div>
+                    <div class="bg-slate-800 rounded p-2 flex justify-between items-center"><span class="text-xs text-slate-400">Total Vaka (Anlık)</span> <span id="total-anomalies" class="font-mono text-xs text-slate-200">0</span></div>
+                </div>
+            </div>
+
+            <!-- Canlı Log Akışı -->
+            <div class="glass-panel p-4 rounded-2xl flex-grow flex flex-col max-h-64">
+                <h2 class="text-xs font-semibold tracking-wide text-slate-300 mb-1"><i class="fa-solid fa-terminal mr-2"></i>CANLI LOG AKIŞI</h2>
+                <p class="text-[9px] text-slate-500 mb-2 leading-relaxed">
+                    <i class="fa-solid fa-info-circle text-slate-600 mr-1"></i>
+                    Sistemde tespit edilen anomalilerin SHA-256 hash imzalı gerçek zamanlı log kayıtları.
+                </p>
+                <div id="live-logs-container" class="bg-[#0a0f18] rounded border border-slate-700/50 p-2 overflow-y-auto flex-grow font-mono text-[9px] text-emerald-400/80 space-y-1">
+                    <div class="text-slate-500">Sistem bağlantısı bekleniyor...</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- KURUMSAL RAPORLAMA -->
+    <div class="glass-panel p-6 rounded-2xl">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-slate-700 pb-4">
+            <div class="mb-4 md:mb-0">
+                <h2 class="text-lg font-bold tracking-wide text-slate-200"><i class="fa-solid fa-briefcase text-emerald-400 mr-2"></i>KURUMSAL VAKA YÖNETİM MERKEZİ</h2>
+                <p class="text-xs text-slate-400 mt-1">Hash tabanlı kriptolojik mühürleme ve kronolojik olay süresi analitiği veri kaydı.</p>
+                <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">
+                    <i class="fa-solid fa-info-circle text-emerald-400/50 mr-1"></i>
+                    Her anomali olayı SHA-256 kriptografik hash ile mühürlenerek değiştirilemezliği garanti altına alınır. Raporlar JSON ve PDF formatında dışa aktarılabilir.
+                </p>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <input type="date" id="dateFilter" class="bg-slate-800 text-xs text-slate-300 border border-slate-600 rounded px-2 py-2 w-32 focus:outline-none focus:border-blue-500">
+                </div>
+                <a href="/download_reports/json" class="bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-bold py-2 px-3 rounded text-[11px] transition">JSON Aktar</a>
+                <a href="/download_reports/pdf" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded text-[11px] transition shadow-lg shadow-emerald-500/20"><i class="fa-solid fa-file-pdf mr-1"></i> PDF Çıktısı</a>
+            </div>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="text-xs text-slate-400 bg-slate-800/80 uppercase font-semibold border-b border-slate-700">
+                    <tr>
+                        <th class="px-4 py-3">Referans ID</th>
+                        <th class="px-4 py-3">Tarih - Saat</th>
+                        <th class="px-4 py-3">Teşhis / Klasifikasyon</th>
+                        <th class="px-4 py-3">Trend Süresi</th>
+                        <th class="px-4 py-3">Tehdit Hacmi (Pik)</th>
+                        <th class="px-4 py-3 text-right">Adli Bütünlük (Hash)</th>
+                    </tr>
+                </thead>
+                <tbody id="reports-body">
+                    <tr><td colspan="6" class="text-center py-6 text-slate-500 text-xs">Arşivde gösterilecek vaka bulunmamaktadır veya filtrelenen tarihte kayıt yoktur.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const UserRole = "{{ role }}"; // global
+
+        async function toggleAction(type) {
+            if(UserRole !== 'admin') { alert("Yetkisiz Erişim!"); return; }
+            await fetch(`/api/toggle_${type}`, {method: 'POST'});
+        }
+
+        async function verifyLogs() {
+            if(UserRole !== 'admin') return;
+            const res = await fetch(`/api/verify_logs`, {method: 'POST'});
+            const data = await res.json();
+            const el = document.getElementById('integrity-status');
+            el.textContent = data.status;
+            el.className = `block text-center text-[10px] font-bold px-2 py-2 rounded mb-2 ` + (data.status.includes("Başarısız") ? "bg-red-500 text-white animate-pulse" : "bg-emerald-600 text-white");
+        }
+
+        async function poisonLog() {
+            if(UserRole !== 'admin') return;
+            await fetch(`/api/poison_log`, {method: 'POST'});
+            verifyLogs(); 
+        }
+
+        async function fetchStats() {
+            try {
+                const response = await fetch('/api/stats');
+                if(response.status === 401) window.location.href = '/login';
+                const data = await response.json();
+                
+                // Metrikler
+                document.getElementById('total-anomalies').textContent = data.stats.total_anomalies;
+                document.getElementById('processing-time').textContent = data.metrics.processing_time;
+                document.getElementById('accuracy-display').textContent = '%' + data.metrics.accuracy;
+                document.getElementById('f1-display').textContent = data.metrics.f1_score;
+                document.getElementById('far-display').textContent = data.metrics.false_alarm_rate;
+                document.getElementById('cpu-display').textContent = data.metrics.cpu_usage;
+
+                // Canlı Log Akışı
+                const logsContainer = document.getElementById('live-logs-container');
+                if (data.logs && data.logs.length > 0) {
+                    logsContainer.innerHTML = data.logs.map(log => {
+                        const isManipulated = log.message.includes("MANİPÜLASYONU");
+                        return `<div class="py-0.5 border-b border-slate-800/30 ${isManipulated ? 'text-red-400 animate-pulse bg-red-900/10' : ''}">
+                            <span class="text-slate-500 mr-1">[${log.time}]</span> 
+                            <span class="text-slate-600 mr-1" title="Hash: ${log.hash}">[${log.hash}]</span> 
+                            <span class="${isManipulated ? 'text-red-400 font-bold' : 'text-emerald-400'}">${log.message}</span>
+                        </div>`;
+                    }).join('');
+                }
+
+                const videoWrapper = document.getElementById('video-wrapper');
+                if(data.stats.current_status === "Risk Tespit Edildi") {
+                    videoWrapper.classList.add('anim-pulse-red');
+                    videoWrapper.style.borderColor = 'rgba(239, 68, 68, 0.8)';
+                } else {
+                    videoWrapper.classList.remove('anim-pulse-red');
+                    videoWrapper.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                }
+
+                if(UserRole === 'admin') {
+                    const btnAtm = document.getElementById('btn-attack');
+                    if(data.state.is_attack_active) { btnAtm.className = "bg-red-600 text-white py-2 rounded text-xs font-bold transition"; } 
+                    else { btnAtm.className = "bg-red-900/50 text-red-200 py-2 rounded text-xs font-bold transition"; }
+                    
+                    const btnDef = document.getElementById('btn-defense');
+                    if(data.state.is_defense_active) { btnDef.className = "bg-emerald-600 text-white py-2 rounded text-xs font-bold transition"; } 
+                    else { btnDef.className = "bg-emerald-900/50 text-emerald-200 py-2 rounded text-xs font-bold transition"; }
+                }
+
+            } catch (e) {}
+        }
+        
+        let allReports = [];
+        async function fetchReports() {
+            try {
+                const res = await fetch('/api/reports');
+                const data = await res.json();
+                allReports = data.reports || [];
+                renderReports();
+            } catch (e) {}
+        }
+
+        function renderReports() {
+            const filterDate = document.getElementById('dateFilter').value;
+            const tbody = document.getElementById('reports-body');
+            
+            let filtered = allReports;
+            if(filterDate) {
+                filtered = allReports.filter(r => r.date === filterDate);
+            }
+
+            if(filtered.length > 0) {
+                tbody.innerHTML = filtered.map(r => `
+                    <tr class="hover:bg-slate-800/60 transition border-b border-slate-700/50">
+                        <td class="px-4 py-3 font-mono text-[10px] text-blue-400">#${r.id}</td>
+                        <td class="px-4 py-3 text-xs text-slate-300">${r.date} ${r.start}</td>
+                        <td class="px-4 py-3"><span class="bg-slate-700/50 border border-slate-600 px-2 py-1 rounded text-[10px] font-medium ${r.behavior.includes('Perturbation') ? 'text-red-400 border-red-900' : 'text-slate-300'}">${r.behavior}</span></td>
+                        <td class="px-4 py-3 text-xs text-slate-300">${r.duration} sn</td>
+                        <td class="px-4 py-3 text-xs font-bold text-orange-400">${r.max_score}</td>
+                        <td class="px-4 py-3 text-[9px] font-mono text-slate-500 text-right"><i class="fa-solid fa-lock text-slate-600 mr-1"></i>${r.hash}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-500 text-xs">Arşivde gösterilecek vaka bulunmamaktadır veya filtrelenen tarihte kayıt yoktur.</td></tr>`;
+            }
+        }
+
+        document.getElementById('dateFilter').addEventListener('change', renderReports);
+
+        setInterval(fetchStats, 1000);
+        setInterval(fetchReports, 2000); 
+    </script>
+</body>
+</html>

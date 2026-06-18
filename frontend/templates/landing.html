@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Güvenlik Kamerası — Adversarial Dayanıklılık ve Siber Savunma Sistemi</title>
+    <meta name="description" content="YOLOv8 ve Autoencoder tabanlı akıllı güvenlik kamerası sistemlerinde adversarial saldırılara karşı çok katmanlı siber savunma mimarisi. Fırat Üniversitesi Bitirme Projesi 2026.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800/50" id="main-nav">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
+                <i class="fa-solid fa-shield-halved text-white text-sm"></i>
+            </div>
+            <div>
+                <p class="text-sm font-bold tracking-wide text-slate-200">SecureVision AI</p>
+                <p class="text-[10px] text-slate-500 font-medium">Bitirme Projesi 2026</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-xs font-medium text-slate-400">
+            <a href="#problem" class="hover:text-blue-400 transition">Problem</a>
+            <a href="#architecture" class="hover:text-blue-400 transition">Mimari</a>
+            <a href="#results" class="hover:text-blue-400 transition">Sonuçlar</a>
+            <a href="#features" class="hover:text-blue-400 transition">Özellikler</a>
+            <a href="#tech-stack" class="hover:text-blue-400 transition">Teknolojiler</a>
+            <a href="/login" id="nav-login-btn" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition font-semibold">
+                <i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Sisteme Giriş
+            </a>
+        </div>
+        <a href="/login" class="md:hidden bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-semibold">Giriş</a>
+    </div>
+</nav>
+
+<!-- ===================== HERO SECTION ===================== -->
+<section class="hero-section" id="hero">
+    <div class="hero-bg"></div>
+    <div class="grid-pattern"></div>
+
+    <!-- Particles -->
+    <div class="particle" style="left:10%; animation-duration:12s; animation-delay:0s;"></div>
+    <div class="particle" style="left:25%; animation-duration:15s; animation-delay:2s; width:3px; height:3px;"></div>
+    <div class="particle" style="left:40%; animation-duration:10s; animation-delay:4s; background:rgba(139,92,246,0.4);"></div>
+    <div class="particle" style="left:55%; animation-duration:18s; animation-delay:1s;"></div>
+    <div class="particle" style="left:70%; animation-duration:14s; animation-delay:3s; width:5px; height:5px; background:rgba(16,185,129,0.3);"></div>
+    <div class="particle" style="left:85%; animation-duration:11s; animation-delay:5s;"></div>
+    <div class="particle" style="left:92%; animation-duration:16s; animation-delay:2s; background:rgba(139,92,246,0.3);"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 bg-slate-800/60 border border-slate-700/50 rounded-full px-4 py-1.5 mb-8">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-medium text-slate-300">Lisans Bitirme Projesi — 2026</span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400">
+                Akıllı Güvenlik Kamerası
+            </span>
+            <br>
+            <span class="text-slate-200 text-3xl md:text-4xl lg:text-5xl font-bold">
+                Adversarial Dayanıklılık ve Siber Savunma Sistemi
+            </span>
+        </h1>
+
+        <p class="text-base md:text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-10">
+            Yapay zeka tabanlı güvenlik kamerası sistemlerinin <strong class="text-blue-400">adversarial perturbation</strong>
+            saldırılarına karşı savunmasızlığı, günümüzün en kritik siber güvenlik açıklarından birini oluşturmaktadır.
+            Bu proje, <strong class="text-cyan-400">YOLOv8</strong> nesne tespiti ve <strong class="text-violet-400">Convolutional Autoencoder</strong>
+            anomali analizi üzerine inşa edilmiş çok katmanlı bir savunma mimarisi sunmaktadır.
+        </p>
+
+        <!-- Tech Badges -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <span class="tech-badge"><i class="fa-solid fa-brain text-blue-400"></i> YOLOv8</span>
+            <span class="tech-badge"><i class="fa-solid fa-network-wired text-violet-400"></i> Autoencoder</span>
+            <span class="tech-badge"><i class="fa-solid fa-shield-virus text-red-400"></i> Adversarial Defense</span>
+            <span class="tech-badge"><i class="fa-solid fa-fingerprint text-emerald-400"></i> SHA-256 Integrity</span>
+            <span class="tech-badge"><i class="fa-brands fa-python text-yellow-400"></i> Python / PyTorch</span>
+            <span class="tech-badge"><i class="fa-solid fa-server text-cyan-400"></i> Flask</span>
+            <span class="tech-badge"><i class="fa-solid fa-database text-amber-400"></i> SQLite</span>
+            <span class="tech-badge"><i class="fa-solid fa-bug text-red-400"></i> NIST NVD CVE API</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="/login" id="hero-cta-login" class="cta-btn bg-gradient-to-r from-blue-600 to-violet-600 text-white font-bold py-4 px-8 rounded-xl text-sm inline-flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rocket"></i> Canlı Sistemi Dene
+            </a>
+            <a href="#problem" class="cta-btn glass border border-slate-700 text-slate-300 font-semibold py-4 px-8 rounded-xl text-sm inline-flex items-center justify-center gap-2 hover:text-white">
+                <i class="fa-solid fa-chevron-down"></i> Projeyi İncele
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 text-xs animate-bounce">
+        <span>Aşağı Kaydır</span>
+        <i class="fa-solid fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- ===================== PROBLEM SECTION ===================== -->
+<section class="py-24 px-6" id="problem">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center mb-16">
+            <p class="text-xs font-bold tracking-[0.2em] text-blue-400 uppercase mb-3">Problemin Tanımı</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mb-4">Neden Bu Projeye İhtiyaç Duyuldu?</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Günümüzde yapay zeka destekli güvenlik sistemleri yaygınlaşırken, bu sistemlerin siber saldırılara
+                karşı ne denli kırılgan olduğu genellikle göz ardı edilmektedir.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="reveal problem-card border-red-500/60 glass rounded-2xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-bug text-red-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Adversarial Perturbation Saldırıları</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            YOLO gibi CNN tabanlı nesne tespit modelleri, görüntüye eklenen
+                            <strong class="text-red-300">yüksek frekanslı gürültü paternleri</strong> ile kolayca kandırılabilmektedir.
+                            İnsan gözü hâlâ kişiyi görebilirken, yapay zeka tamamen körleşir.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal problem-card border-amber-500/60 glass rounded-2xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-database text-amber-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Veri Zehirleme ve Log Manipülasyonu</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Güvenlik olayı kayıtlarının bir saldırgan tarafından <strong class="text-amber-300">sonradan değiştirilmesi</strong>,
+                            adli bilişim süreçlerini doğrudan sabote eder.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal problem-card border-violet-500/60 glass rounded-2xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-chart-line text-violet-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Performans Degradasyonu</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Adversarial saldırı altında modelin doğruluğu <strong class="text-violet-300">%97'den %44.8'e</strong> düşmekte,
+                            yanlış alarm oranı ise <strong class="text-violet-300">%4'ten %74.9'a</strong> çıkmaktadır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal problem-card border-cyan-500/60 glass rounded-2xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user-shield text-cyan-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Erişim Kontrolü Eksikliği</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Mevcut güvenlik kamerası yazılımlarında <strong class="text-cyan-300">rol tabanlı erişim kontrolü (RBAC)</strong>
+                            genellikle yer almamaktadır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Stats -->
+        <div class="reveal grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+            <div class="stat-card glass rounded-xl p-5 text-center">
+                <p class="text-3xl font-black text-red-400 counter">%74.9</p>
+                <p class="text-xs text-slate-400 mt-1">Saldırı Altında Yanlış Alarm</p>
+            </div>
+            <div class="stat-card glass rounded-xl p-5 text-center">
+                <p class="text-3xl font-black text-amber-400 counter">%44.8</p>
+                <p class="text-xs text-slate-400 mt-1">Saldırı Altında Doğruluk</p>
+            </div>
+            <div class="stat-card glass rounded-xl p-5 text-center">
+                <p class="text-3xl font-black text-emerald-400 counter">%96</p>
+                <p class="text-xs text-slate-400 mt-1">Savunma Sonrası Doğruluk</p>
+            </div>
+            <div class="stat-card glass rounded-xl p-5 text-center">
+                <p class="text-3xl font-black text-blue-400 counter">0.938</p>
+                <p class="text-xs text-slate-400 mt-1">Savunma Sonrası F1-Skor</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-4xl mx-auto"></div>
+
+<!-- ===================== ARCHITECTURE SECTION ===================== -->
+<section class="py-24 px-6" id="architecture">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center mb-16">
+            <p class="text-xs font-bold tracking-[0.2em] text-violet-400 uppercase mb-3">Sistem Mimarisi</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mb-4">Çok Katmanlı Savunma Mimarisi</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Sistem, birbirine bağlı beş temel katmandan oluşmaktadır. Her katman belirli bir güvenlik
+                fonksiyonunu yerine getirerek uçtan uca koruma sağlar.
+            </p>
+        </div>
+
+        <div class="max-w-3xl mx-auto">
+            <!-- Layer 1 -->
+            <div class="reveal arch-layer glass border-l-4 border-cyan-500">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-video text-cyan-400 text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-bold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded">KATMAN 1</span>
+                            <h3 class="text-base font-bold text-slate-100">Veri Toplama Katmanı</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            <code class="text-cyan-400 text-[11px]">WebCamera</code> sınıfı, ayrı bir <strong>thread</strong> üzerinde
+                            sürekli kare yakalama yapar. Frame-skipping mekanizması ile CPU yükü optimize edilir.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+
+            <!-- Layer 2 -->
+            <div class="reveal arch-layer glass border-l-4 border-blue-500">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-crosshairs text-blue-400 text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">KATMAN 2</span>
+                            <h3 class="text-base font-bold text-slate-100">Nesne Tespit Katmanı</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            <code class="text-blue-400 text-[11px]">YOLOv8-Nano</code> modeli, her karede sadece insan sınıfını
+                            (<code class="text-blue-300">classes=[0]</code>) tespit eder.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+
+            <!-- Layer 3 -->
+            <div class="reveal arch-layer glass border-l-4 border-violet-500">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-brain text-violet-400 text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-bold bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded">KATMAN 3</span>
+                            <h3 class="text-base font-bold text-slate-100">Anomali Analiz Katmanı</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            <code class="text-violet-400 text-[11px]">Convolutional Autoencoder</code> mimarisi,
+                            normal davranış kalıplarını öğrenir. <strong>Yeniden Yapılandırma Hatası (MSE)</strong> eşik değerini
+                            aşan görüntüler anomali olarak sınıflandırılır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+
+            <!-- Layer 4 -->
+            <div class="reveal arch-layer glass border-l-4 border-red-500">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-shield-virus text-red-400 text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-bold bg-red-500/20 text-red-300 px-2 py-0.5 rounded">KATMAN 4</span>
+                            <h3 class="text-base font-bold text-slate-100">Siber Güvenlik Katmanı</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            <strong class="text-red-300">Saldırı Simülasyonu:</strong> Yüksek frekanslı parazit ile CNN filtrelerini bozan
+                            adversarial perturbation. <strong class="text-emerald-300">Savunma:</strong> Median Blur → Gaussian → Sharpening dizisi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+
+            <!-- Layer 5 -->
+            <div class="reveal arch-layer glass border-l-4 border-emerald-500">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-fingerprint text-emerald-400 text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">KATMAN 5</span>
+                            <h3 class="text-base font-bold text-slate-100">Raporlama ve Bütünlük Katmanı</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Her anomali olayı <code class="text-emerald-400 text-[11px]">SHA-256</code> hash ile mühürlenir.
+                            SQLite veritabanında kalıcı depolama. RBAC ile yetki kontrolü sağlanır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-4xl mx-auto"></div>
+
+<!-- ===================== RESULTS SECTION ===================== -->
+<section class="py-24 px-6" id="results">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center mb-16">
+            <p class="text-xs font-bold tracking-[0.2em] text-emerald-400 uppercase mb-3">Deneysel Sonuçlar</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mb-4">Performans Değerlendirmesi</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                500 örneklik test veri seti üzerinde gerçekleştirilen değerlendirmeler.
+            </p>
+        </div>
+
+        <!-- Metric Table -->
+        <div class="reveal glass rounded-2xl overflow-hidden mb-12">
+            <table class="w-full metric-table">
+                <thead class="bg-slate-800/50">
+                    <tr>
+                        <th>Senaryo</th><th>Doğruluk</th><th>Kesinlik</th><th>Duyarlılık</th><th>F1-Skor</th><th>Yanlış Alarm Oranı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-semibold text-slate-200"><i class="fa-solid fa-circle text-emerald-400 text-[8px] mr-2"></i>Normal Koşullar</td>
+                        <td class="text-emerald-400 font-bold">%97.0</td><td>0.914</td><td>0.993</td><td class="font-semibold">0.952</td><td>%4.0</td>
+                    </tr>
+                    <tr class="bg-red-500/5">
+                        <td class="font-semibold text-slate-200"><i class="fa-solid fa-circle text-red-400 text-[8px] mr-2"></i>Saldırı Altında</td>
+                        <td class="text-red-400 font-bold">%44.8</td><td>0.342</td><td>0.907</td><td class="font-semibold text-red-300">0.496</td><td class="text-red-300">%74.9</td>
+                    </tr>
+                    <tr class="bg-blue-500/5">
+                        <td class="font-semibold text-slate-200"><i class="fa-solid fa-circle text-blue-400 text-[8px] mr-2"></i>Savunma Aktif</td>
+                        <td class="text-blue-400 font-bold">%96.0</td><td>0.882</td><td>1.000</td><td class="font-semibold text-blue-300">0.938</td><td>%5.7</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Figures Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="reveal figure-card glass">
+                <div class="p-4 border-b border-slate-700/50">
+                    <h4 class="text-xs font-bold text-slate-300"><i class="fa-solid fa-chart-area text-blue-400 mr-2"></i>Eğitim Kayıp Grafiği</h4>
+                    <p class="text-[10px] text-slate-500 mt-1">Train Loss vs Validation Loss — 50 Epoch</p>
+                </div>
+                <img src="/static/figures/egitim_kayip.png" alt="Eğitim kayıp grafiği">
+            </div>
+            <div class="reveal figure-card glass">
+                <div class="p-4 border-b border-slate-700/50">
+                    <h4 class="text-xs font-bold text-slate-300"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i>Eğitim Doğruluk Grafiği</h4>
+                    <p class="text-[10px] text-slate-500 mt-1">Train Accuracy vs Validation Accuracy — 50 Epoch</p>
+                </div>
+                <img src="/static/figures/egitim_dogruluk.png" alt="Eğitim doğruluk grafiği">
+            </div>
+            <div class="reveal figure-card glass">
+                <div class="p-4 border-b border-slate-700/50">
+                    <h4 class="text-xs font-bold text-slate-300"><i class="fa-solid fa-table-cells text-violet-400 mr-2"></i>Karışıklık Matrisi</h4>
+                    <p class="text-[10px] text-slate-500 mt-1">TP: 149 | TN: 331 | FP: 19 | FN: 1</p>
+                </div>
+                <img src="/static/figures/karisiklik_matrisi.png" alt="Karışıklık matrisi">
+            </div>
+            <div class="reveal figure-card glass md:col-span-1 lg:col-span-2">
+                <div class="p-4 border-b border-slate-700/50">
+                    <h4 class="text-xs font-bold text-slate-300"><i class="fa-solid fa-scale-balanced text-amber-400 mr-2"></i>Senaryo Karşılaştırması</h4>
+                    <p class="text-[10px] text-slate-500 mt-1">Normal vs Adversarial Saldırı vs Savunma Filtresi</p>
+                </div>
+                <img src="/static/figures/senaryo_karsilastirma.png" alt="Senaryo karşılaştırma grafiği">
+            </div>
+            <div class="reveal figure-card glass">
+                <div class="p-4 border-b border-slate-700/50">
+                    <h4 class="text-xs font-bold text-slate-300"><i class="fa-solid fa-chart-bar text-cyan-400 mr-2"></i>Anomali Skor Dağılımı</h4>
+                    <p class="text-[10px] text-slate-500 mt-1">Normal vs anomali MSE skor frekans dağılımı</p>
+                </div>
+                <img src="/static/figures/skor_dagilimi.png" alt="Skor dağılımı grafiği">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-4xl mx-auto"></div>
+
+<!-- ===================== FEATURES SECTION ===================== -->
+<section class="py-24 px-6" id="features">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center mb-16">
+            <p class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-3">Platform Özellikleri</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mb-4">Neler Yapabilirsiniz?</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="reveal glass rounded-2xl p-6 hover:border-blue-500/30 transition border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-satellite-dish text-blue-400 text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-100 mb-2">Canlı Görüntü İzleme</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">YOLOv8 ile gerçek zamanlı insan tespiti ve Autoencoder tabanlı anomali skorlaması.</p>
+            </div>
+            <div class="reveal glass rounded-2xl p-6 hover:border-red-500/30 transition border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-shield-virus text-red-400 text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-100 mb-2">Adversarial Saldırı Simülasyonu</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Tek tuşla adversarial perturbation başlatarak CNN filtrelerinin bozulmasını gözlemleyin.</p>
+            </div>
+            <div class="reveal glass rounded-2xl p-6 hover:border-emerald-500/30 transition border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-shield-halved text-emerald-400 text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-100 mb-2">Anti-Adversarial Savunma</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Median Blur + Gaussian + Sharpening filtre zinciri ile savunma mekanizması.</p>
+            </div>
+            <div class="reveal glass rounded-2xl p-6 hover:border-violet-500/30 transition border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-fingerprint text-violet-400 text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-100 mb-2">SHA-256 Log Bütünlüğü</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Her olay kaydı kriptografik hash ile mühürlenir. Veri zehirleme simülasyonu yapılabilir.</p>
+            </div>
+            <div class="reveal glass rounded-2xl p-6 hover:border-amber-500/30 transition border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-briefcase text-amber-400 text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-100 mb-2">Kurumsal Vaka Raporlama</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">JSON ve PDF formatında dışa aktarma, hash tabanlı adli bütünlük kaydı.</p>
+            </div>
+            <div class="reveal glass rounded-2xl p-6 hover:border-cyan-500/30 transition border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-bug text-red-400 text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-100 mb-2">Harici API Entegrasyonu</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">NIST NVD CVE API ile siber tehdit istihbaratı. IP kamera ve yapay zeka açıklarını listeler.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-4xl mx-auto"></div>
+
+<!-- ===================== TECH STACK SECTION ===================== -->
+<section class="py-24 px-6" id="tech-stack">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center mb-16">
+            <p class="text-xs font-bold tracking-[0.2em] text-amber-400 uppercase mb-3">Teknoloji Yığını</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mb-4">Kullanılan Teknolojiler</h2>
+        </div>
+
+        <div class="reveal grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass rounded-2xl p-5 text-center border border-transparent hover:border-blue-500/30 transition">
+                <div class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-display text-blue-400 text-2xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-200 mb-2">Arayüz (Frontend)</h3>
+                <p class="text-[11px] text-slate-400">HTML5 · CSS3 · JavaScript<br>TailwindCSS · Font Awesome</p>
+            </div>
+            <div class="glass rounded-2xl p-5 text-center border border-transparent hover:border-emerald-500/30 transition">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-server text-emerald-400 text-2xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-200 mb-2">Backend</h3>
+                <p class="text-[11px] text-slate-400">Python · Flask<br>REST API · Blueprint Mimarisi</p>
+            </div>
+            <div class="glass rounded-2xl p-5 text-center border border-transparent hover:border-violet-500/30 transition">
+                <div class="w-14 h-14 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-brain text-violet-400 text-2xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-200 mb-2">Yapay Zeka</h3>
+                <p class="text-[11px] text-slate-400">YOLOv8 · PyTorch<br>Autoencoder · OpenCV</p>
+            </div>
+            <div class="glass rounded-2xl p-5 text-center border border-transparent hover:border-amber-500/30 transition">
+                <div class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-database text-amber-400 text-2xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-200 mb-2">Veritabanı & API</h3>
+                <p class="text-[11px] text-slate-400">SQLite · SHA-256<br>NIST NVD CVE API</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-4xl mx-auto"></div>
+
+<!-- ===================== CTA SECTION ===================== -->
+<section class="py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center reveal">
+        <div class="glass rounded-3xl p-12 border border-slate-700/50 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-violet-500/5"></div>
+            <div class="relative z-10">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center mx-auto mb-6">
+                    <i class="fa-solid fa-rocket text-white text-2xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-100 mb-4">Sistemi Canlı Olarak Deneyin</h2>
+                <p class="text-sm text-slate-400 leading-relaxed mb-8 max-w-lg mx-auto">
+                    Kontrol paneline giriş yaparak tüm özellikleri gerçek zamanlı olarak test edebilirsiniz.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/login" class="cta-btn bg-gradient-to-r from-blue-600 to-violet-600 text-white font-bold py-4 px-10 rounded-xl text-sm inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sisteme Giriş Yap
+                    </a>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-4">Yönetici: admin / 123 &nbsp;|&nbsp; Operatör: operator / 123</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="border-t border-slate-800/50 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
+                <i class="fa-solid fa-shield-halved text-white text-xs"></i>
+            </div>
+            <p class="text-xs text-slate-500">SecureVision AI — Bitirme Projesi 2026</p>
+        </div>
+        <p class="text-[10px] text-slate-600">
+            Fırat Üniversitesi · Teknoloji Fakültesi · Yazılım Mühendisliği
+        </p>
+        <p class="text-[10px] text-slate-600">
+            Python · Flask · YOLOv8 · PyTorch · OpenCV · SQLite · NIST NVD CVE API
+        </p>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="/static/js/landing.js"></script>
+</body>
+</html>
